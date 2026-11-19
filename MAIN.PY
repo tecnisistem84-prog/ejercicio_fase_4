@@ -1,12 +1,13 @@
-"""Software FJ - Simulación de 15 operaciones (válidas e inválidas)."""
+"""Software FJ - Simulación de 19 operaciones (válidas e inválidas) y auditoría."""
 from gestor import GestorFJ
 
 
 def main():
+    """Punto de entrada principal: ejecuta pruebas integrales sin interrupciones."""
     g = GestorFJ()
     print("=" * 70, "\n SOFTWARE FJ - SIMULACIÓN DE OPERACIONES\n", "=" * 70, "\n", sep="")
 
-    # --- Clientes ---
+    # --- 1. Gestión y Validación de Clientes ---
     g.ejecutar("Registrar cliente válido (Laura)", g.registrar_cliente,
                id_cliente="1075123456", nombre="laura gómez", email="laura@mail.com", telefono="3101234567")
     g.ejecutar("Registrar cliente con correo inválido", g.registrar_cliente,
@@ -18,7 +19,7 @@ def main():
     g.ejecutar("Registrar cliente con datos incompletos (sin teléfono)", g.registrar_cliente,
                id_cliente="55512345", nombre="Ana Torres", email="ana@mail.com")
 
-    # --- Servicios ---
+    # --- 2. Creación y Validación de Servicios Especializados ---
     g.ejecutar("Crear sala de reuniones válida", g.crear_servicio, "sala",
                codigo="s01", nombre="Sala Ejecutiva", tarifa_hora=50000, capacidad=30)
     g.ejecutar("Crear servicio con tarifa negativa", g.crear_servicio, "equipo",
@@ -30,7 +31,7 @@ def main():
     g.ejecutar("Crear equipo válido", g.crear_servicio, "equipo",
                codigo="E02", nombre="Portátil Gamer", tarifa_hora=15000, deposito=50000)
 
-    # --- Reservas ---
+    # --- 3. Procesamiento de Reservas, Cancelaciones y Tolerancia a Fallos ---
     g.ejecutar("Reserva exitosa de sala (3 h)", g.reservar, "1075123456", "S01", 3)
     g.ejecutar("Reserva con cliente inexistente", g.reservar, "000000000", "S01", 2)
     g.ejecutar("Reserva con duración inválida (30 h)", g.reservar, "79845612", "E02", 30)
@@ -42,7 +43,7 @@ def main():
     g.ejecutar("Falla interna simulada (división por cero)", lambda: 1 / 0)
     g.ejecutar("Reserva posterior al error grave (el sistema sigue activo)", g.reservar, "1075123456", "A02", 1)
 
-    # --- Resumen ---
+    # --- 4. Resumen de Ejecución y Reporte Financiero ---
     ok = sum(1 for _, _, e in g.resultados if e == "OK")
     ctrl = sum(1 for _, _, e in g.resultados if e == "ERROR CONTROLADO")
     inesp = sum(1 for _, _, e in g.resultados if e == "ERROR INESPERADO")
@@ -51,7 +52,10 @@ def main():
     print("\nClientes:");  [print("  ", c) for c in g.clientes.values()]
     print("Servicios:");   [print("  ", s) for s in g.servicios.values()]
     print("Reservas:");    [print("  ", r) for r in g.reservas]
-    print("\nEl programa terminó sin interrupciones. Detalle en logs/software_fj.log")
+
+    # Imprime el reporte financiero implementado en GestorFJ
+    print(g.generar_reporte_financiero())
+    print("El programa terminó sin interrupciones. Detalle en logs/software_fj.log")
 
 
 if __name__ == "__main__":
