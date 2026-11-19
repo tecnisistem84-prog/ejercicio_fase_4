@@ -14,7 +14,7 @@ Aplicación orientada a objetos desarrollada en Python **sin uso de bases de dat
 * `main.py`: Simulación de 19 operaciones completas (válidas e inválidas) que demuestran la estabilidad del sistema ante fallos.
 
 ## Requisitos y Ejecución
-1. Contar con **Python 3.10** o superior instalado.
+1. Contar con **Python 3.13** o superior instalado.
 2. Clonar el repositorio y ejecutar el archivo principal:
    ```bash
    python main.py
