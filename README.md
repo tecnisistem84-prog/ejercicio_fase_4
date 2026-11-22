@@ -19,4 +19,4 @@ Aplicación orientada a objetos desarrollada en Python **sin uso de bases de dat
    ```bash
    python main.py
    ```
-## Agradecimientos al valioso aporte de Camilo Anacona - https://github.com/CamiloJi
+## Agradecimientos al valioso aporte de Camilo Anacona - https://github.com/CamiloJi y a Alejandro Olave - https://github.com/alejandroolave
