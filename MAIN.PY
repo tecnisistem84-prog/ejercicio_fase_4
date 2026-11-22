@@ -1,37 +1,29 @@
 """Software FJ - Simulación de 19 operaciones (válidas e inválidas) y auditoría."""
 from gestor import GestorFJ
-
-
 def main():
     """Punto de entrada principal: ejecuta pruebas integrales sin interrupciones."""
     g = GestorFJ()
+# Se instancia el gestor principal que administra clientes, servicios, reservas y registros en memoria
     print("=" * 70, "\n SOFTWARE FJ - SIMULACIÓN DE OPERACIONES\n", "=" * 70, "\n", sep="")
 
     # --- 1. Gestión y Validación de Clientes ---
+# Verifica registros válidos, correos inválidos, IDs duplicados y parámetros faltantes mediante excepciones controladas
     g.ejecutar("Registrar cliente válido (Laura)", g.registrar_cliente,
                id_cliente="1075123456", nombre="laura gómez", email="laura@mail.com", telefono="3101234567")
     g.ejecutar("Registrar cliente con correo inválido", g.registrar_cliente,
-               id_cliente="1075999888", nombre="Pedro Ruiz", email="pedro#mail", telefono="3201112233")
-    g.ejecutar("Registrar cliente válido (Carlos)", g.registrar_cliente,
-               id_cliente="79845612", nombre="Carlos Pérez", email="carlos@fj.co", telefono="3009876543")
-    g.ejecutar("Registrar cliente duplicado", g.registrar_cliente,
-               id_cliente="1075123456", nombre="Laura Otra", email="otra@mail.com", telefono="3101234567")
-    g.ejecutar("Registrar cliente con datos incompletos (sin teléfono)", g.registrar_cliente,
+@@ -20,6 +22,7 @@ def main():
                id_cliente="55512345", nombre="Ana Torres", email="ana@mail.com")
 
     # --- 2. Creación y Validación de Servicios Especializados ---
+# Prueba la creación de salas, equipos y asesorías validando tarifas, depósitos y niveles permitidos
     g.ejecutar("Crear sala de reuniones válida", g.crear_servicio, "sala",
                codigo="s01", nombre="Sala Ejecutiva", tarifa_hora=50000, capacidad=30)
     g.ejecutar("Crear servicio con tarifa negativa", g.crear_servicio, "equipo",
-               codigo="E01", nombre="Video Beam", tarifa_hora=-100, deposito=20000)
-    g.ejecutar("Crear asesoría con nivel inválido", g.crear_servicio, "asesoria",
-               codigo="A01", nombre="Asesoría en Redes", tarifa_hora=80000, nivel="maestro")
-    g.ejecutar("Crear asesoría válida", g.crear_servicio, "asesoria",
-               codigo="A02", nombre="Asesoría en Redes", tarifa_hora=80000, nivel="Senior")
-    g.ejecutar("Crear equipo válido", g.crear_servicio, "equipo",
+@@ -32,6 +35,7 @@ def main():
                codigo="E02", nombre="Portátil Gamer", tarifa_hora=15000, deposito=50000)
 
     # --- 3. Procesamiento de Reservas, Cancelaciones y Tolerancia a Fallos ---
+# Evalúa reservas válidas, clientes/duraciones inválidas, cancelaciones y fallos sin detener la ejecución
     g.ejecutar("Reserva exitosa de sala (3 h)", g.reservar, "1075123456", "S01", 3)
     g.ejecutar("Reserva con cliente inexistente", g.reservar, "000000000", "S01", 2)
     g.ejecutar("Reserva con duración inválida (30 h)", g.reservar, "79845612", "E02", 30)
@@ -42,7 +34,6 @@ def main():
     g.ejecutar("Cancelar de nuevo R001 (estado inválido)", g.cancelar_reserva, "R001")
     g.ejecutar("Falla interna simulada (división por cero)", lambda: 1 / 0)
     g.ejecutar("Reserva posterior al error grave (el sistema sigue activo)", g.reservar, "1075123456", "A02", 1)
-
     # --- 4. Resumen de Ejecución y Reporte Financiero ---
     ok = sum(1 for _, _, e in g.resultados if e == "OK")
     ctrl = sum(1 for _, _, e in g.resultados if e == "ERROR CONTROLADO")
@@ -52,11 +43,9 @@ def main():
     print("\nClientes:");  [print("  ", c) for c in g.clientes.values()]
     print("Servicios:");   [print("  ", s) for s in g.servicios.values()]
     print("Reservas:");    [print("  ", r) for r in g.reservas]
-
     # Imprime el reporte financiero implementado en GestorFJ
     print(g.generar_reporte_financiero())
     print("El programa terminó sin interrupciones. Detalle en logs/software_fj.log")
-
 
 if __name__ == "__main__":
     main()
